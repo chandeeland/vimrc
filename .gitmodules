@@ -1,0 +1,9 @@
+[submodule "modules/pathogen"]
+	path = modules/pathogen
+	url = git@github.com:tpope/vim-pathogen.git
+[submodule "bundle/vim-json"]
+	path = bundle/vim-json
+	url = git@github.com:elzr/vim-json.git
+[submodule "bundle/vim-phpdoc"]
+	path = bundle/vim-phpdoc
+	url = git@github.com:copacode/vim-phpdoc.git
