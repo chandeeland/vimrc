@@ -1,6 +1,5 @@
 
 set nocompatible                " get out of horrible vi-compatible mode
-set nocp
 execute pathogen#infect()
 
 " General
@@ -50,14 +49,31 @@ set so=10                " Keep 10 lines (top/bottom) for scope
 set novisualbell            " don't blink
 set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 set laststatus=2            " always show the status line
+    
 
 " Text Formatting/Layout
-set fo=tcrqn                " See Help (complex)
-"set ai                    " autoindent
-"set nosmarttab                " use tabs at the start of a line, spaces elsewhere
-"set smarttab
+"set fo=tcrqn                " See Help (complex)
 set nowrap                " do not wrap lines  
-    
+set smarttab                
+"set nosmarttab
+"set smartindent
+"set ai                    " autoindent
+"set autoindent
+set cindent                " smartest auto indent (for c like languages)
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+
+
+" prevents auto EOL after last line (just EOF)
+set noeol
+
+" highlight unwanted tabs
+highlight STUPIDTABS ctermbg=blue
+match STUPIDTABS /\t/
+
+
 " Folding
 "    Enable folding, but by default make it act like folding is off, because folding is annoying in anything but a few rare cases
 set foldenable                " Turn on folding
@@ -170,16 +186,33 @@ endfunction
 " Mappings
 map <A-i> i <ESC>r                    " alt-i (normal mode) inserts a single char, and then switches back to normal
 
+" F1 toggles paste mode
 nnoremap <F1> :set invpaste paste?<CR>
 set pastetoggle=<F1>
 set showmode
 
-map <F2> :s/,/\r    ,/g<CR>		" F2 breaks up long lines along a comma.
+" F2 toggles line numbers
+nmap <F2> :set invnumber<CR>
 
-map <F3> <ESC>ggVG:call SuperRetab()<left>
-map <F4> <ESC>:call SvnBlame_blameCurrentFile()<CR>
-map <F11> se rl!                " reverse script (toggle)
-map <F12> ggVGg?                " encypt the file (toggle)
+" F3 auto document php block
+map <F3> <ESC>:exec PhpDoc()<CR>i
+
+" F4 auto retab to 4 spaces
+map <F4> <ESC>ggVG:call SuperRetab(4)<left>
+
+" F5 Blame
+"map <F5> <ESC>:call SvnBlame_blameCurrentFile()<CR>
+map <F5> <ESC>:Gblame<CR>
+
+" F6 make long CSV's readable
+map <F5> <ESC>:s/,/\r    ,/g<CR>     " F2 breaks up long lines along a comma.
+
+" Spacebar folds
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
+
+map <F11> <ESC>:se rl!                " reverse script (toggle)
+map <F12> <ESC>ggVGg?                " encypt the file (toggle)
 
 " Autocommands
 autocmd BufEnter * :syntax sync fromstart                " ensure every file does syntax highlighting (full)
@@ -187,22 +220,22 @@ au BufNewFile,BufRead *.asp :set ft=aspjscript                " all my .asp file
 au BufNewFile,BufRead *.tpl :set ft=html                " all my .tpl files ARE html
 au BufNewFile,BufRead *.hta :set ft=html                " all my .tpl files ARE html
 au BufNewFile,BufRead *.ssa :set ft=php                    " all my .ssa files ARE php
-"
-" prevents auto EOL after last line (just EOF)
-"
-set noeol
-set binary
 
-" hard tabs only
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set smartindent
-set autoindent
-set expandtab
-"set cindent
 
-" highlight unwanted tabs
-highlight STUPIDTABS ctermbg=blue
-match STUPIDTABS /\t/
+" php-doc modded values
 
+" Whether or not to automatically add the function end comment (1|0)
+let g:pdv_cfg_autoEndFunction = 0
+" Whether or not to automatically add the class end comment (1|0)
+let g:pdv_cfg_autoEndClass = 0
+let g:pdv_cfg_Type = "mixed" 
+let g:pdv_cfg_Package = "" 
+let g:pdv_cfg_Version = "$id$" 
+let g:pdv_cfg_Author = "David Chan <dchan@mshanken.com>" 
+let g:pdv_cfg_Copyright = strftime('%Y') . " Mshanken Communications" 
+let g:pdv_cfg_License = "BSD-3 {@link https://github.com/mshanken/metamodel/blob/master/LICENSE.md}" 
+
+let g:pdv_cfg_ReturnVal = "void" 
+
+
+"set binary             " this is for binary file edits, revokes expandtab
