@@ -204,14 +204,17 @@ map <F4> <ESC>ggVG:call SuperRetab(4)<left>
 "map <F5> <ESC>:call SvnBlame_blameCurrentFile()<CR>
 map <F5> <ESC>:Gblame<CR>
 
-" F6 make long CSV's readable
-map <F5> <ESC>:s/,/\r    ,/g<CR>     " F2 breaks up long lines along a comma.
+" pretty format json
+map <F6> <ESC>:%s/\([,[\]{}]\)/\1\r/g<CR>:%s/\([}\]]\)/\r\1/g<CR><ESC>:set syntax=json<CR><ESC>ggVG=
+
+" F7 make long CSV's readable
+map <F7> <ESC>:s/,/\r    ,/g<CR>     " F2 breaks up long lines along a comma.
 
 " Spacebar folds
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
 
-map <F11> <ESC>:se rl!                " reverse script (toggle)
+map <F11> <ESC>:se rl!<CR>                " reverse script (toggle)
 map <F12> <ESC>ggVGg?                " encypt the file (toggle)
 
 " Autocommands
@@ -239,3 +242,21 @@ let g:pdv_cfg_ReturnVal = "void"
 
 
 "set binary             " this is for binary file edits, revokes expandtab
+
+"PHP qa
+
+"let g:phpqa_php_cmd='/path/to/php'
+"let g:phpqa_messdetector_ruleset = "/path/to/phpmd.xml"
+"let g:phpqa_codesniffer_cmd='/path/to/phpcs'
+"let g:phpqa_messdetector_cmd='/path/to/phpmd'
+
+let g:phpqa_messdetector_autorun = 1
+let g:phpqa_codesniffer_autorun = 0
+let g:phpqa_codecoverage_autorun = 0
+
+"let g:phpqa_codecoverage_file = "/path/to/clover.xml"
+
+"let g:phpqa_messdetector_ruleset="codesize,unusedcode,naming"
+let g:phpqa_messdetector_ruleset="unusedcode,naming"
+
+let g:phpqa_codesniffer_args=" --standard=/home/dchan/.vim/codesniffer_rules.xml"
